@@ -34,6 +34,31 @@ bool get_ui_tick_pending();
 
 bool is_sim_frame();
 
+class TickSpin {
+public:
+    template <typename F>
+    float advance(F&& deltaFn) {
+        if (get_ui_tick_pending()) {
+            m_base += m_delta;
+            if (m_base >= 360.0f) {
+                m_base -= 360.0f;
+            } else if (m_base <= -360.0f) {
+                m_base += 360.0f;
+            }
+            m_delta = deltaFn();
+        }
+        return m_base + m_delta * get_interpolation_step();
+    }
+
+    float advance(float delta) {
+        return advance([delta] { return delta; });
+    }
+
+private:
+    float m_base = 0.0f;
+    float m_delta = 0.0f;
+};
+
 void record_camera(::camera_process_class* cam, int camera_id);
 void interp_view(::view_class* view);
 void record_final_mtx(Mtx m, const void *key);
