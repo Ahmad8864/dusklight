@@ -37,24 +37,45 @@ bool is_sim_frame();
 class TickSpin {
 public:
     template <typename F>
-    float advance(F&& deltaFn) {
+    float draw_then_advance(F&& deltaFn) {
         if (get_ui_tick_pending()) {
-            m_base += m_delta;
-            if (m_base >= 360.0f) {
-                m_base -= 360.0f;
-            } else if (m_base <= -360.0f) {
-                m_base += 360.0f;
-            }
+            m_base = wrap(m_base + m_delta);
             m_delta = deltaFn();
         }
-        return m_base + m_delta * get_interpolation_step();
+        return sample();
     }
 
-    float advance(float delta) {
-        return advance([delta] { return delta; });
+    float draw_then_advance(float delta) {
+        return draw_then_advance([delta] { return delta; });
+    }
+
+    template <typename F>
+    float advance_then_draw(F&& deltaFn) {
+        if (get_ui_tick_pending()) {
+            m_delta = deltaFn();
+            m_base = wrap(m_base + m_delta);
+        }
+        return sample();
+    }
+
+    float advance_then_draw(float delta) {
+        return advance_then_draw([delta] { return delta; });
     }
 
 private:
+    static float wrap(float value) {
+        if (value >= 360.0f) {
+            value -= 360.0f;
+        } else if (value <= -360.0f) {
+            value += 360.0f;
+        }
+        return value;
+    }
+
+    float sample() const {
+        return m_base + m_delta * get_interpolation_step();
+    }
+
     float m_base = 0.0f;
     float m_delta = 0.0f;
 };

@@ -3636,7 +3636,7 @@ void dKyr_drawHousi(Mtx drawMtx, u8** tex) {
                 dKr_cullVtx_Set(IF_DUSK(true));
 
 #if TARGET_PC
-                MTXRotRad(rotMtx, 'Z', DEG_TO_RAD(rot.advance(1.2f)));
+                MTXRotRad(rotMtx, 'Z', DEG_TO_RAD(rot.advance_then_draw(1.2f)));
 #else
                 rot += 1.2f;
                 MTXRotRad(rotMtx, 'Z', DEG_TO_RAD(rot));
@@ -4007,7 +4007,7 @@ void dKyr_drawSnow(Mtx drawMtx, u8** tex) {
                     Mtx rotMtx;
 #if TARGET_PC
                     MTXRotRad(
-                        rotMtx, 'Z', DEG_TO_RAD(rot.advance([] { return 5.0f + cM_rndFX(2.0f); })));
+                        rotMtx, 'Z', DEG_TO_RAD(rot.draw_then_advance([] { return 5.0f + cM_rndFX(2.0f); })));
 #else
                     MTXRotRad(rotMtx, 'Z', DEG_TO_RAD(rot));
 
@@ -4353,7 +4353,7 @@ void dKyr_drawStar(Mtx drawMtx, u8** tex) {
 
         Mtx rotMtx;
 #if TARGET_PC
-        MTXRotRad(rotMtx, 'Z', DEG_TO_RAD(rot.advance(0.65f)));
+        MTXRotRad(rotMtx, 'Z', DEG_TO_RAD(rot.draw_then_advance(0.65f)));
 #else
         MTXRotRad(rotMtx, 'Z', DEG_TO_RAD(rot));
 #endif
@@ -4657,7 +4657,7 @@ void drawCloudShadow(Mtx drawMtx, u8** tex) {
             dKr_cullVtx_Set();
 
 #if TARGET_PC
-            MTXRotRad(rotMtx, 'Z', DEG_TO_RAD(rot.advance(-0.45f)));
+            MTXRotRad(rotMtx, 'Z', DEG_TO_RAD(rot.draw_then_advance(-0.45f)));
 #else
             MTXRotRad(rotMtx, 'Z', DEG_TO_RAD(rot));
 #endif
@@ -4701,7 +4701,7 @@ void drawCloudShadow(Mtx drawMtx, u8** tex) {
             cMtx_concat(sp120, j3dSys.getViewMtx(), spF0);
 
 #if TARGET_PC
-            MTXRotRad(rotMtx, 'Z', DEG_TO_RAD(rot.advance(2.0f)));
+            MTXRotRad(rotMtx, 'Z', DEG_TO_RAD(rot.advance_then_draw(2.0f)));
 #else
             rot += 2.0f;
             MTXRotRad(rotMtx, 'Z', DEG_TO_RAD(rot));
@@ -5714,7 +5714,7 @@ void dKyr_odour_draw(Mtx drawMtx, u8** tex) {
     cMtx_concat(sp120, j3dSys.getViewMtx(), spF0);
 
 #if TARGET_PC
-    MTXRotRad(rotMtx, 'Z', DEG_TO_RAD(rot.advance(2.0f)));
+    MTXRotRad(rotMtx, 'Z', DEG_TO_RAD(rot.advance_then_draw(2.0f)));
 #else
     rot += 2.0f;
     MTXRotRad(rotMtx, 'Z', DEG_TO_RAD(rot));
@@ -6294,7 +6294,7 @@ static void dKyr_evil_draw2(Mtx drawMtx, u8** tex) {
 #endif
 
 #if TARGET_PC
-        MTXRotRad(rotMtx, 'Z', DEG_TO_RAD(rot.advance(0.7f)));
+        MTXRotRad(rotMtx, 'Z', DEG_TO_RAD(rot.advance_then_draw(0.7f)));
 #else
         rot += 0.7f;
         MTXRotRad(rotMtx, 'Z', DEG_TO_RAD(rot));
@@ -6541,7 +6541,7 @@ void dKyr_evil_draw(Mtx drawMtx, u8** tex) {
 #endif
 
 #if TARGET_PC
-        MTXRotRad(rotMtx, 'Z', DEG_TO_RAD(rot.advance(1.0f)));
+        MTXRotRad(rotMtx, 'Z', DEG_TO_RAD(rot.advance_then_draw(1.0f)));
 #else
         rot += 1.0f;
         MTXRotRad(rotMtx, 'Z', DEG_TO_RAD(rot));
